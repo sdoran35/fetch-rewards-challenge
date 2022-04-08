@@ -43,7 +43,7 @@ public class PointsController {
      * @return the created transaction with generated {@code payer_id}
      */
     @RequestMapping(value = "/createTransaction", method = RequestMethod.POST)
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
+    public ResponseEntity<String> createTransaction(@RequestBody Transaction transaction) {
         return pointsService.createTransaction(transaction);
     }
 

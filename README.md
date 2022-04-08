@@ -57,9 +57,7 @@ Fetch Rewards BackEnd Interview Assessment
 - The points of the payer are given as `INTEGER`.
 - If the transaction is successful them the result will be returned as "Transaction Processed" with HTTP Status Code
   of `201 - Created` and the created records
-- If the format is incorrect, it will return "Transaction Format Incorrect" with HTTP Status Code of `400 - Bad Request`
-- If the transaction fails, it will return "Transaction Failed to Process" with HTTP Status Code
-  of `500 - Internal Server Error`
+- If the format is incorrect, it will return "Transaction Failed to Process" with HTTP Status Code of `400 - Bad Request`
 - We can have transactions with negative points for a particular user which will deduct the points given by the same
   user.
   <br/>
@@ -96,7 +94,7 @@ Fetch Rewards BackEnd Interview Assessment
 - If the lookup is successful them the result will be returned as "Points Lookup Processed" with HTTP Status Code
   of `201 - Created`
 - If the lookup fails, it will return "Points Lookup Failed to Process with HTTP Status Code
-  of `500 - Internal Server Error`
+  of `400 - Bad Request`
   <br/>
   <br/>
 
@@ -108,7 +106,7 @@ Fetch Rewards BackEnd Interview Assessment
 
 ### Endpoint: `/spendPoints`
 
-- This is a `PUT` request. <br/>
+- This is a `POST` request. <br/>
   We can use the following Request Body:
   <br/><br/>
 
