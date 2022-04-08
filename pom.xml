@@ -54,6 +54,17 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <configuration>
+                    <processTypes>
+                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+                        <jdkVersion>17</jdkVersion>
+                    </processTypes>
+                </configuration>
+                <version>3.0.3</version>
+            </plugin>
         </plugins>
     </build>
 
