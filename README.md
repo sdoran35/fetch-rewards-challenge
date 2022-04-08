@@ -4,19 +4,72 @@ Fetch Rewards BackEnd Interview Assessment
 
 <br/>
 
-**Running the Application (Local):**
+### Hosted Access
 
-- Clone the project in a local repository
-- Import the project in your IDE of Choice (Eclipse or IntelliJ or VSCode)
-    - You will import as a maven project
-- Run the created `FetchRewardsChallengeApplication` run config
--
-
-**Running the Application (Heroku Application):**
-
+The App is hosted at https://warm-mountain-06740.herokuapp.com
 - This project is also deployed to a heroku application. This allows for running the application without needing to
   clone and build the project.
 - The below steps for using the endpoints is the same, just with a different URL
+- Heroku URL: The App is hosted at https://warm-mountain-06740.herokuapp.com
+
+**Running the Application (Local):**
+
+### Setup
+
+#### 1. Verify Java
+Open your terminal/command prompt and enter the following command
+```
+java -version
+```
+If your java version is 1.8 or higher, then continue below. Otherwise, update it to the most recent JDK.
+
+Verify your version again.
+```
+java -version
+```
+#### 2. Clone the project from Git.
+If you do not have git installed, [click here.](https://git-scm.com/downloads)
+
+If you're unsure, open your terminal and type in
+```
+git --version
+```
+
+Once git is installed, clone the project from git
+
+In your terminal, run the following command
+```
+$ git clone https://github.com/sdoran35/fetch-rewards-challenge
+```
+This will clone the repo to your local machine
+
+#### 4. Build Project using Maven
+This step not needed if using the Heroku hosted version
+
+If you do not have maven installed, you can install it [here.](https://maven.apache.org/download.cgi)
+
+If you're unsure, enter this command in your terminal
+```
+mvn -version
+```
+
+Once maven is installed, build the project. (Make sure you are in the cloned folder)
+```
+mvn clean install -U
+```
+
+### Run the application
+This step not needed if using the heroku hosted version.
+
+After maven has finished building and was successful, you'll now have a target folder in your project folder.
+```
+cd target
+```
+Run the following command to start the application
+```
+java -jar FetchRewardsChallenge-0.0.1-SNAPSHOT.jar
+```
+
 
 **API Routes:**
 
@@ -30,13 +83,16 @@ Fetch Rewards BackEnd Interview Assessment
 
 ## **Using the API with `POSTMAN` or `INSOMNIA`**
 
+Add [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en) extension for Chrome or any other REST Client
+
+Launch Postman, or other REST Client
 ---
 
 ## 1. Add Points to the User
 
 <br/>
 
-### Endpoint: `/processTransaction`
+### Endpoint: `/api/v1/points/processTransaction`
 
 - This is a `POST` request. <br/>
   We can use any of the following Request Body:
@@ -69,7 +125,7 @@ Fetch Rewards BackEnd Interview Assessment
 
 <br/>
 
-### Endpoint: `/pointsBalance`
+### Endpoint: `/api/v1/points/pointsBalance`
 
 - This is a `GET` request. <br/>
 - This API call gives all the POINTS of the user along with the payer name.
@@ -104,7 +160,7 @@ Fetch Rewards BackEnd Interview Assessment
 
 <br/>
 
-### Endpoint: `/spendPoints`
+### Endpoint: `/api/v1/points/spendPoints`
 
 - This is a `POST` request. <br/>
   We can use the following Request Body:
