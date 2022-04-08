@@ -51,7 +51,6 @@ public class PointsServiceImpl implements PointsService {
         List<Balance> balanceList = new ArrayList<>();
 
         int amountToSpend = spentBalance.getBalance();
-
         transactionList.sort(Transaction::compareTo);
 
         for(Transaction transaction : transactionList) {
@@ -59,9 +58,9 @@ public class PointsServiceImpl implements PointsService {
 
             if(amountToSpend > 0) {
                 if(amountToSpend <= transaction.getBalance()) {
-
                     change = amountToSpend;
                     amountToSpend = 0;
+
                 } else {
                     amountToSpend -= transaction.getBalance();
                     change = transaction.getBalance();
@@ -74,8 +73,6 @@ public class PointsServiceImpl implements PointsService {
                 } else {
                     tempMap.replace(transaction.getPayerName(), tempMap.get(transaction.getPayerName()) + (change * -1));
                 }
-
-
             }
         }
 

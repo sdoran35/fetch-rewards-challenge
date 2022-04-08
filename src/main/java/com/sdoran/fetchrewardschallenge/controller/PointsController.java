@@ -21,7 +21,6 @@ public class PointsController {
     private final PointsService pointsService;
 
     public PointsController(final PointsService pointsService) {
-
         this.pointsService = pointsService;
     }
 
@@ -57,8 +56,4 @@ public class PointsController {
     public ResponseEntity<List<Balance>> spendPoints(@RequestBody SpentBalance spentBalance) {
         return pointsService.spendPoints(spentBalance);
     }
-
-
-
-
 }
