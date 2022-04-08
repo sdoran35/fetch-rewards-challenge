@@ -18,6 +18,11 @@ public class PointsServiceImpl implements PointsService {
     private static Integer availableBalance = 0;
     private static Integer id = 0;
 
+    /**
+     *
+     * @param transaction the transaction information to use
+     * @return processed/failed to process
+     */
     public ResponseEntity<String> createTransaction(final Transaction transaction) {
 
         if(userTransactionMap.containsKey(transaction.getPayerName())) {
@@ -76,6 +81,11 @@ public class PointsServiceImpl implements PointsService {
         return new ResponseEntity<String>("Transaction Processed", HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * @param points the points to spend
+     * @return list of spent balance
+     */
     public ResponseEntity<List<SpentBalance>> spendPoints(Integer points) {
 
         List<SpentBalance> spentBalanceList = new ArrayList<SpentBalance>();
@@ -120,6 +130,10 @@ public class PointsServiceImpl implements PointsService {
         return new ResponseEntity<List<SpentBalance>>(spentBalanceList, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @return the list of all balances
+     */
     public ResponseEntity<List<Balance>> getAllBalances() {
 
         List<Balance> balanceList = new ArrayList<Balance>();
