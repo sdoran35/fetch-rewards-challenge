@@ -1,11 +1,11 @@
 package com.sdoran.fetchrewardschallenge.model;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,18 +14,18 @@ public class Transaction implements Comparable<Transaction> {
     @JsonProperty("payerName")
     private String payerName;
 
-    @JsonProperty("points")
-    private Integer points;
+    @JsonProperty("balance")
+    private Integer balance;
 
     @JsonProperty("timeStamp")
     private LocalDateTime timeStamp;
 
     public Transaction(final String payerName,
-                       final Integer points,
+                       final Integer balance,
                        final LocalDateTime timeStamp) {
 
         this.payerName = payerName;
-        this.points = points;
+        this.balance = balance;
         this.timeStamp = timeStamp;
     }
 
@@ -41,12 +41,12 @@ public class Transaction implements Comparable<Transaction> {
         this.payerName = payerName;
     }
 
-    public Integer getPoints() {
-        return points;
+    public Integer getBalance() {
+        return balance;
     }
 
-    public void setPoints(final Integer points) {
-        this.points = points;
+    public void setBalance(final Integer balance) {
+        this.balance = balance;
     }
 
     public LocalDateTime getTimestamp() {
@@ -66,19 +66,19 @@ public class Transaction implements Comparable<Transaction> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Transaction that)) return false;
-        return getPayerName().equals(that.getPayerName()) && getPoints().equals(that.getPoints()) && getTimestamp().equals(that.getTimestamp());
+        return getPayerName().equals(that.getPayerName()) && getBalance().equals(that.getBalance()) && getTimestamp().equals(that.getTimestamp());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPayerName(), getPoints(), getTimestamp());
+        return Objects.hash(getPayerName(), getBalance(), getTimestamp());
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
                 "payerName='" + payerName + '\'' +
-                ", points=" + points +
+                ", balance=" + balance +
                 ", timeStamp=" + timeStamp +
                 '}';
     }

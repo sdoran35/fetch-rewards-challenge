@@ -44,9 +44,9 @@ Fetch Rewards BackEnd Interview Assessment
 
  ```JSON
    {
-  "payer": "DANNON",
-  "points": 1000,
-  "timestamp": "2020-11-02T14:00:00Z"
+  "payerName": "DANNON",
+  "balance": 1000,
+  "timeStamp": "2020-11-02T14:00:00Z"
 }
  ```
 
@@ -112,7 +112,7 @@ Fetch Rewards BackEnd Interview Assessment
 
  ```JSON
 {
-  "points": "points_to_spend"
+  "balance": "points_to_spend"
 }
  ```
 
@@ -124,9 +124,9 @@ Fetch Rewards BackEnd Interview Assessment
  ```JSON
    [
   {
-    "payer_name": "DANNON",
-    "payer_balance": "-100",
-    "time": "2020-10-31T10:00:00Z"
+    "payerName": "DANNON",
+    "payerBalance": "-100",
+    "timeStamp": "2020-10-31T10:00:00Z"
   }
 ]
  ```
