@@ -30,80 +30,74 @@ public class PointsServiceImpl implements PointsService {
     public ResponseEntity<String> createTransaction(final Transaction transaction) {
         if(payerTransactionMap.containsKey(transaction.getPayer())) {
 
-            List<Integer> userIdList= payerTransactionMap.get(transaction.getPayer());
-            if(transaction.getPoints()<0) {
+            List<Integer> userIdList = payerTransactionMap.get(transaction.getPayer());
+            if(transaction.getPoints() < 0) {
 
-                int amount = -1*transaction.getPoints();
+                int amount = -1 * transaction.getPoints();
 
-                int balance  =  getSingleBalance(transaction.getPayer());
+                if(getSingleBalance(transaction.getPayer()) < amount) {
+                    return new ResponseEntity<>("Transaction Failed to Process", HttpStatus.BAD_REQUEST);
+                }
 
-                if(balance<amount) return new ResponseEntity<String>("Transaction Unsucessful", HttpStatus.BAD_REQUEST);
-
-
-                List<Integer> idToRemove= new ArrayList<>();
-
-                for(int i : userIdList) {
+                for(int i : payerTransactionMap.get(transaction.getPayer())) {
                     Transaction  trans  = transactionMap.get(i);
-                    if(trans.getPoints()>=amount) {
-                        trans.setPoints(trans.getPoints()-amount);
+                    if(trans.getPoints() >= amount) {
+                        trans.setPoints(trans.getPoints() - amount);
                         transactionMap.put(i, trans);
                         break;
                     }
                     else {
-                        amount-=trans.getPoints();
+                        amount -= trans.getPoints();
                         trans.setPoints(0);
                         transactionMap.put(i, trans);
                     }
 
-                    if(trans.getPoints()==0) {
+                    if(trans.getPoints() == 0) {
                         transactionMap.remove(i);
-                        idToRemove.add(i);
+                        userIdList.remove(i);
                     }
                 }
 
-                idToRemove.forEach(userIdList::remove);
+                payerTransactionMap.put(transaction.getPayer(), payerTransactionMap.get(transaction.getPayer()));
 
-                payerTransactionMap.put(transaction.getPayer(), userIdList);
-
-                payerBalance+=transaction.getPoints();
             }
             else {
-                userIdList.add(++payerId);
-                payerTransactionMap.put(transaction.getPayer(), userIdList);
+                payerTransactionMap.get(transaction.getPayer()).add(++payerId);
+                payerTransactionMap.put(transaction.getPayer(), payerTransactionMap.get(transaction.getPayer()));
                 transactionMap.put(payerId, transaction);
-                payerBalance+=transaction.getPoints();
 
             }
         }
         else {
-            if(transaction.getPoints()<=0) return new ResponseEntity<String>("Transaction Unsucessful", HttpStatus.BAD_REQUEST);
+            if(transaction.getPoints() <= 0) {
+                return new ResponseEntity<>("Transaction Failed to Process", HttpStatus.BAD_REQUEST);
+            }
 
-            List<Integer> userIdList= new ArrayList<>();
-            userIdList.add(++payerId);
-            payerTransactionMap.put(transaction.getPayer(), userIdList);
+            payerTransactionMap.put(transaction.getPayer(), Collections.singletonList(++payerId));
             transactionMap.put(payerId, transaction);
-            payerBalance+=transaction.getPoints();
         }
+        payerBalance += transaction.getPoints();
 
-
-        return new ResponseEntity<String>("Transaction Sucessful", HttpStatus.OK);
+        return new ResponseEntity<>("Transaction Processed", HttpStatus.OK);
     }
 
     public ResponseEntity<List<SpentBalance>> spendPoints(int points) {
 
-        List<SpentBalance> deductedBalanceList = new ArrayList<SpentBalance>();
-        if(points>payerBalance) return new ResponseEntity<List<SpentBalance>>(deductedBalanceList, HttpStatus.BAD_REQUEST);
+        List<SpentBalance> spentBalanceList = new ArrayList<>();
+        if(points > payerBalance) {
+            return new ResponseEntity<>(spentBalanceList, HttpStatus.BAD_REQUEST);
+        }
 
         List<Integer> removeIds = new ArrayList<>();
         for(int i : transactionMap.keySet()) {
 
-            if(transactionMap.get(i).getPoints()>=points) {
+            if(transactionMap.get(i).getPoints() >= points) {
 
-                deductedBalanceList.add(new SpentBalance(transactionMap.get(i).getPayer(), -1*points, LocalDateTime.now()));
+                spentBalanceList.add(new SpentBalance(transactionMap.get(i).getPayer(), -1 * points, LocalDateTime.now()));
 
-                System.out.println(transactionMap.get(i).getPayer() + ", -" + points+ ", "+LocalDateTime.now());
+                System.out.println(transactionMap.get(i).getPayer() + ", -" + points + ", "+LocalDateTime.now());
 
-                transactionMap.get(i).setPoints(transactionMap.get(i).getPoints()-points);
+                transactionMap.get(i).setPoints(transactionMap.get(i).getPoints() - points);
                 if(transactionMap.get(i).getPoints()==0) {
                     payerTransactionMap.get(transactionMap.get(i).getPayer()).remove(i);
                     removeIds.add(i);
@@ -111,8 +105,8 @@ public class PointsServiceImpl implements PointsService {
                 break;
             }
             else {
-                if(transactionMap.get(i).getPoints()>0) {
-                    deductedBalanceList.add(new SpentBalance(transactionMap.get(i).getPayer(), -1*transactionMap.get(i).getPoints(), LocalDateTime.now()));
+                if(transactionMap.get(i).getPoints() > 0) {
+                    spentBalanceList.add(new SpentBalance(transactionMap.get(i).getPayer(), -1 * transactionMap.get(i).getPoints(), LocalDateTime.now()));
                     System.out.println(transactionMap.get(i).getPayer() + ", -" + transactionMap.get(i).getPoints()+ ", "+LocalDateTime.now());
                     points-=transactionMap.get(i).getPoints();
                     transactionMap.get(i).setPoints(0);
@@ -123,66 +117,32 @@ public class PointsServiceImpl implements PointsService {
 
         }
 
-        for(int i : removeIds) {
-            transactionMap.remove(i);
-        }
-        payerBalance-=points;
+        removeIds.forEach(i -> transactionMap.remove(i));
+        payerBalance -= points;
 
-        return new ResponseEntity<List<SpentBalance>>(deductedBalanceList, HttpStatus.OK);
+        return new ResponseEntity<>(spentBalanceList, HttpStatus.OK);
     }
 
-//    /**
-//     * Return a list of all point balances
-//     *
-//     * @return the list of point balances
-//     */
-//    public ResponseEntity<List<Balance>> getAllBalances() {
-//        return new ResponseEntity<>(payerTransactionMap.keySet().stream()
-//                .map(payee -> new Balance(payee, getSingleBalance(payee)))
-//            .collect(Collectors.toList()), HttpStatus.OK);
-//}
-//
-//    /**
-//     * Helper function to get points balance
-//     *
-//     * @param payer payer
-//     * @return the payer point balance
-//     */
-//    private Integer getSingleBalance(final String payer) {
-//        return payerTransactionMap.get(payer).stream().mapToInt(id -> id).map(i -> transactionMap.get(i).getPoints()).sum();
-//    }
-
-
+    /**
+     * Return a list of all point balances
+     *
+     * @return the list of point balances
+     */
     public ResponseEntity<List<Balance>> getAllBalances() {
+        return new ResponseEntity<>(payerTransactionMap.keySet().stream()
+                .map(payee -> new Balance(payee, getSingleBalance(payee)))
+            .collect(Collectors.toList()), HttpStatus.OK);
+}
 
-        List<Balance> allUsersbalance = new ArrayList<Balance>();
-        for(String payee : payerTransactionMap.keySet()) {
-            int amount=0;
-            List<Integer> ids = payerTransactionMap.get(payee);
-
-            for(int id : ids) {
-                amount+= transactionMap.get(id).getPoints();
-            }
-
-            allUsersbalance.add(new Balance(payee, amount));
-
-            System.out.println(payee +" : " + amount);
-        }
-
-        return new ResponseEntity<>(allUsersbalance,HttpStatus.OK);
+    /**
+     * Helper function to get points balance
+     *
+     * @param payer payer
+     * @return the payer point balance
+     */
+    private Integer getSingleBalance(String payer) {
+        return payerTransactionMap.get(payer).stream()
+                .mapToInt(id -> id).map(id -> transactionMap.get(id).getPoints())
+                .sum();
     }
-
-
-
-    private Integer getSingleBalance(String user) {
-        List<Integer> ids = payerTransactionMap.get(user);
-
-        int amount=0;
-        for(int id : ids) {
-            amount+= transactionMap.get(id).getPoints();
-        }
-
-        return amount;
-    }
-
 }

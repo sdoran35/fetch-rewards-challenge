@@ -85,8 +85,12 @@ java -jar FetchRewardsChallenge-0.0.1-SNAPSHOT.jar
 
 Add [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en) extension for Chrome or any other REST Client
 
-Launch Postman, or other REST Client
----
+### Launch Postman, or other REST Client
+
+This project is secured with a simple user/password
+#### Username : user
+#### Password: password
+
 
 ## 1. Add Points to the User
 
