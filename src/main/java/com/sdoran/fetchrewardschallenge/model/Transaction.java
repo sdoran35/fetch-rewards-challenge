@@ -1,85 +1,85 @@
 package com.sdoran.fetchrewardschallenge.model;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Transaction implements Comparable<Transaction> {
 
-    @JsonProperty("payerName")
-    private String payerName;
+    @JsonProperty("payer")
+    private String payer;
 
-    @JsonProperty("balance")
-    private Integer balance;
+    @JsonProperty("points")
+    private Integer points;
 
-    @JsonProperty("timeStamp")
-    private LocalDateTime timeStamp;
+    @JsonProperty("timestamp")
+    private LocalDateTime timestamp;
 
-    public Transaction(final String payerName,
-                       final Integer balance,
-                       final LocalDateTime timeStamp) {
+    public Transaction(final String payer,
+                       final Integer points,
+                       final LocalDateTime timestamp) {
 
-        this.payerName = payerName;
-        this.balance = balance;
-        this.timeStamp = timeStamp;
+        this.payer = payer;
+        this.points = points;
+        this.timestamp = timestamp;
     }
 
     public Transaction() {
         //default, empty constructor
     }
 
-    public String getPayerName() {
-        return payerName;
+    public String getPayer() {
+        return payer;
     }
 
-    public void setPayerName(final String payerName) {
-        this.payerName = payerName;
+    public void setPayer(final String payer) {
+        this.payer = payer;
     }
 
-    public Integer getBalance() {
-        return balance;
+    public Integer getPoints() {
+        return points;
     }
 
-    public void setBalance(final Integer balance) {
-        this.balance = balance;
+    public void setPoints(final Integer points) {
+        this.points = points;
     }
 
     public LocalDateTime getTimestamp() {
-        return timeStamp;
+        return timestamp;
     }
 
-    public void setTimestamp(final LocalDateTime timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(final LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
     public int compareTo(final Transaction o) {
-        return this.timeStamp.compareTo(o.getTimestamp());
+        return this.timestamp.compareTo(o.getTimestamp());
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof Transaction that)) return false;
-        return getPayerName().equals(that.getPayerName()) && getBalance().equals(that.getBalance()) && getTimestamp().equals(that.getTimestamp());
+        return getPayer().equals(that.getPayer()) && getPoints().equals(that.getPoints()) && getTimestamp().equals(that.getTimestamp());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPayerName(), getBalance(), getTimestamp());
+        return Objects.hash(getPayer(), getPoints(), getTimestamp());
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
-                "payerName='" + payerName + '\'' +
-                ", balance=" + balance +
-                ", timeStamp=" + timeStamp +
+                "payer='" + payer + '\'' +
+                ", points=" + points +
+                ", timestamp=" + timestamp +
                 '}';
     }
 }

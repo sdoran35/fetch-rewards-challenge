@@ -10,35 +10,20 @@ import java.util.Objects;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Balance implements Serializable {
+public class Points implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 7755923164506753224L;
-
-    @JsonProperty("payer")
-    private String payer;
+    private static final long serialVersionUID = 3728015878983049135L;
 
     @JsonProperty("points")
     private Integer points;
 
-    public Balance(final String payer,
-                   final Integer points) {
-
-        super();
-        this.payer = payer;
+    public Points(final Integer points) {
         this.points = points;
     }
 
-    public Balance() {
+    public Points() {
         //default, empty constructor
-    }
-
-    public String getPayer() {
-        return payer;
-    }
-
-    public void setPayer(final String payer) {
-        this.payer = payer;
     }
 
     public Integer getPoints() {
@@ -52,20 +37,19 @@ public class Balance implements Serializable {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof Balance balance)) return false;
-        return getPayer().equals(balance.getPayer()) && getPoints().equals(balance.getPoints());
+        if (!(o instanceof Points points1)) return false;
+        return getPoints().equals(points1.getPoints());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPayer(), getPoints());
+        return Objects.hash(getPoints());
     }
 
     @Override
     public String toString() {
-        return "Balance{" +
-                "payer='" + payer + '\'' +
-                ", points=" + points +
+        return "Points{" +
+                "points=" + points +
                 '}';
     }
 }
